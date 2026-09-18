@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quay Gì Đây? — Vòng quay quyết định</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="marquee-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <p class="site-header__eyebrow">Đừng suy nghĩ nữa</p>
+    <h1 class="site-header__title">Quay Gì Đây?</h1>
+    <p class="site-header__subtitle">Tự thêm lựa chọn của bạn, bấm Quay, để vòng quay quyết định giúp.</p>
+  </header>
+
+  <main class="layout">
+
+    <!-- Tabs danh mục -->
+    <nav class="category-tabs" id="category-tabs" aria-label="Danh mục"></nav>
+
+    <form class="add-category-form" id="add-category-form">
+      <input
+        type="text"
+        id="new-category-input"
+        placeholder="Thêm danh mục mới, vd: Đi đâu cuối tuần…"
+        maxlength="40"
+        autocomplete="off"
+      />
+      <button type="submit" class="btn btn--outline">+ Danh mục</button>
+    </form>
+
+    <div class="board">
+      <!-- Cột trái: quản lý lựa chọn -->
+      <section class="panel panel--manage">
+        <div class="panel__head">
+          <h2 id="category-title">—</h2>
+          <button id="delete-category-btn" class="btn btn--text-danger" hidden>Xoá danh mục</button>
+        </div>
+
+        <ul class="manage-list" id="item-list"></ul>
+        <p class="empty-state" id="empty-state" hidden>Danh mục này chưa có lựa chọn nào. Thêm vài cái bên dưới nhé.</p>
+
+        <form class="add-item-form" id="add-item-form">
+          <input
+            type="text"
+            id="new-item-input"
+            placeholder="Thêm lựa chọn, vd: Bún đậu mắm tôm…"
+            maxlength="60"
+            autocomplete="off"
+          />
+          <button type="submit" class="btn btn--ghost">Thêm</button>
+        </form>
+
+        <h3 class="history-title">Đã quay gần đây</h3>
+        <ul class="history-list" id="history-list"></ul>
+      </section>
+
+      <!-- Cột phải: khu vực quay -->
+      <section class="panel panel--spin">
+        <div class="spin-stage">
+          <div class="pointer" aria-hidden="true"></div>
+          <div class="roulette-viewport" id="roulette-viewport" hidden>
+            <div class="roulette-track" id="roulette-track"></div>
+          </div>
+
+          <div class="idle-illustration" id="idle-illustration">
+            <span class="idle-illustration__dice">🎯</span>
+            <p>Bấm <strong>Quay Ngay</strong> để bắt đầu</p>
+          </div>
+
+          <div class="result-panel" id="result-panel" hidden>
+            <p class="result-panel__label">Kết quả</p>
+            <p class="result-panel__name" id="result-name">—</p>
+            <button class="btn btn--primary" id="spin-again-btn">Quay Lại</button>
+          </div>
+        </div>
+
+        <button class="btn btn--spin" id="spin-btn">Quay Ngay</button>
+      </section>
+    </div>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
