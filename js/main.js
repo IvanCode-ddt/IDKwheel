@@ -19,7 +19,7 @@
 
 import * as Store from "./state.js";
 import { weightedPick, buildStrip } from "./roulette.js";
-import { stripCardHTML, manageRowHTML, escapeHTML } from "./render.js";
+import { stripCardHTML, manageRowHTML, thumbHTML, escapeHTML } from "./render.js";
 import { colorForIndex } from "./data.js";
 
 // ---------- DOM refs --------------------------------------------------------
@@ -40,6 +40,7 @@ const $rouletteViewport = document.getElementById("roulette-viewport");
 const $rouletteTrack = document.getElementById("roulette-track");
 
 const $resultPanel = document.getElementById("result-panel");
+const $resultThumb = document.getElementById("result-thumb");
 const $resultName = document.getElementById("result-name");
 const $spinAgainBtn = document.getElementById("spin-again-btn");
 
@@ -188,6 +189,8 @@ function spin() {
 
   window.setTimeout(() => {
     Store.recordSpin(category.id, winner.name);
+    const winnerIndex = category.items.findIndex((it) => it.id === winner.id);
+    $resultThumb.innerHTML = thumbHTML(winner, Math.max(0, winnerIndex), "thumb--xl");
     $resultName.textContent = winner.name;
     $resultPanel.hidden = false;
     isSpinning = false;

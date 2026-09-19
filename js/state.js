@@ -10,7 +10,10 @@
 
 import { DEFAULT_CATEGORIES } from "./data.js";
 
-const STORAGE_KEY = "spin_app_state_v1";
+// Đổi tên key (v1 -> v2) khi cấu trúc dữ liệu mặc định thay đổi lớn (thêm
+// field "image", đổi danh mục món ăn) để người dùng cũ tự động nhận bộ dữ
+// liệu mới thay vì bị kẹt với dữ liệu cũ trong localStorage.
+const STORAGE_KEY = "spin_app_state_v2";
 
 function seedState() {
   return {
@@ -18,7 +21,7 @@ function seedState() {
       id: c.id,
       name: c.name,
       emoji: c.emoji,
-      items: c.items.map((name, i) => ({ id: uid(), name })),
+      items: c.items.map((it) => ({ id: uid(), name: it.name, image: it.image ?? null })),
     })),
     // lịch sử quay gần đây, theo từng categoryId
     history: {}, // { [categoryId]: [{itemName, ts}] }
@@ -95,12 +98,13 @@ export function deleteCategory(categoryId) {
 }
 
 // ---- Lựa chọn (items) trong 1 danh mục ---------------------------------
-export function addItem(categoryId, name) {
+// image: data URL (string) hoặc null nếu chưa có ảnh.
+export function addItem(categoryId, name, image = null) {
   const trimmed = name.trim();
   if (!trimmed) return null;
   const category = state.categories.find((c) => c.id === categoryId);
   if (!category) return null;
-  const item = { id: uid(), name: trimmed };
+  const item = { id: uid(), name: trimmed, image };
   category.items.push(item);
   save();
   return item;
@@ -110,6 +114,16 @@ export function removeItem(categoryId, itemId) {
   const category = state.categories.find((c) => c.id === categoryId);
   if (!category) return;
   category.items = category.items.filter((it) => it.id !== itemId);
+  save();
+}
+
+/** Gắn/đổi ảnh cho 1 item đã có sẵn (vd item mặc định chưa có ảnh). */
+export function updateItemImage(categoryId, itemId, image) {
+  const category = state.categories.find((c) => c.id === categoryId);
+  if (!category) return;
+  const item = category.items.find((it) => it.id === itemId);
+  if (!item) return;
+  item.image = image;
   save();
 }
 

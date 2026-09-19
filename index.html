@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Quay Gì Đây? — Vòng quay quyết định</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quay Gì Đây? — Vòng quay quyết định</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
 
   <div class="marquee-bar" aria-hidden="true"></div>
@@ -25,13 +29,8 @@
     <nav class="category-tabs" id="category-tabs" aria-label="Danh mục"></nav>
 
     <form class="add-category-form" id="add-category-form">
-      <input
-        type="text"
-        id="new-category-input"
-        placeholder="Thêm danh mục mới, vd: Đi đâu cuối tuần…"
-        maxlength="40"
-        autocomplete="off"
-      />
+      <input type="text" id="new-category-input" placeholder="Thêm danh mục mới, vd: Đi đâu cuối tuần…" maxlength="40"
+        autocomplete="off" />
       <button type="submit" class="btn btn--outline">+ Danh mục</button>
     </form>
 
@@ -47,13 +46,8 @@
         <p class="empty-state" id="empty-state" hidden>Danh mục này chưa có lựa chọn nào. Thêm vài cái bên dưới nhé.</p>
 
         <form class="add-item-form" id="add-item-form">
-          <input
-            type="text"
-            id="new-item-input"
-            placeholder="Thêm lựa chọn, vd: Bún đậu mắm tôm…"
-            maxlength="60"
-            autocomplete="off"
-          />
+          <input type="text" id="new-item-input" placeholder="Thêm lựa chọn, vd: Bún đậu mắm tôm…" maxlength="60"
+            autocomplete="off" />
           <button type="submit" class="btn btn--ghost">Thêm</button>
         </form>
 
@@ -76,6 +70,7 @@
 
           <div class="result-panel" id="result-panel" hidden>
             <p class="result-panel__label">Kết quả</p>
+            <div class="result-panel__thumb" id="result-thumb"></div>
             <p class="result-panel__name" id="result-name">—</p>
             <button class="btn btn--primary" id="spin-again-btn">Quay Lại</button>
           </div>
@@ -88,4 +83,5 @@
 
   <script type="module" src="js/main.js"></script>
 </body>
+
 </html>
