@@ -5,6 +5,14 @@
  * render.js, và phát âm thanh "tích tích" lúc quay bằng Web Audio API
  * (không cần file mp3 nào).
  *
+ * CACHE BUSTING: các đường import bên dưới (và 2 dòng CSS/JS trong
+ * index.html) đều có "?v=1" ở cuối. Đây là 1 con số dùng CHUNG cho TOÀN
+ * BỘ project — mỗi khi bạn cập nhật code và muốn ép trình duyệt người
+ * dùng tải bản mới nhất (không bị dính cache cũ), hãy tăng số này lên 1
+ * ở TẤT CẢ các chỗ đang có "?v=1": index.html (2 chỗ) + main.js (5 chỗ)
+ * + state.js (1 chỗ) + render.js (1 chỗ). Nếu nhờ AI/Claude Code làm hộ,
+ * chỉ cần nói "tăng cache version lên" là đủ, AI sẽ tự tìm sửa hết.
+ *
  * LUỒNG MÀN HÌNH:
  *   #screen-select (lưới các hòm)
  *     --click 1 hòm-->  #screen-open (hòm vàng -> quay -> kết quả)
@@ -20,14 +28,14 @@
  * -----------------------------------------------------------------------
  */
 
-import * as Store from "./state.js";
-import { weightedPick, buildStrip } from "./roulette.js";
+import * as Store from "./state.js?v=1";
+import { weightedPick, buildStrip } from "./roulette.js?v=1";
 import {
   stripCardHTML, manageRowHTML, thumbHTML, caseCardHTML,
   defaultCrateSVG, statsListHTML, reviewHTML, escapeHTML,
-} from "./render.js";
-import { initSounds, unlockAudio, playTick, playOpen, playReveal } from "./sound.js";
-import { FEEDBACK_FORM_URL } from "./data.js";
+} from "./render.js?v=1";
+import { initSounds, unlockAudio, playTick, playOpen, playReveal } from "./sound.js?v=1";
+import { FEEDBACK_FORM_URL } from "./data.js?v=1";
 
 // ---------- DOM refs --------------------------------------------------------
 const $screenSelect = document.getElementById("screen-select");

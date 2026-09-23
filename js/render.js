@@ -6,7 +6,7 @@
  * -----------------------------------------------------------------------
  */
 
-import { colorForIndex } from "./data.js";
+import { colorForIndex } from "./data.js?v=1";
 
 export function escapeHTML(str) {
   const div = document.createElement("div");

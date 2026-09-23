@@ -1,17 +1,32 @@
 /**
  * state.js
  * -----------------------------------------------------------------------
- * Lưu & đọc danh mục (hòm) / lựa chọn / lịch sử quay bằng localStorage.
- * Nơi DUY NHẤT đọc/ghi localStorage — muốn chuyển sang lưu server sau
+ * Lưu & đọc danh mục (hòm) / lựa chọn / lịch sử quay bằng sessionStorage.
+ *
+ * DÙNG sessionStorage (KHÔNG PHẢI localStorage) CÓ CHỦ ĐÍCH: mỗi khi người
+ * dùng đóng tab/đóng trình duyệt rồi mở lại, toàn bộ hòm/lựa chọn họ tự
+ * thêm sẽ tự mất, web quay về đúng bộ dữ liệu mặc định trong data.js.
+ * Lưu ý: sessionStorage cũng KHÔNG dùng chung giữa các tab — mở 2 tab thì
+ * mỗi tab có dữ liệu riêng, không đồng bộ với nhau.
+ *
+ * VERSION TRACKING: mỗi lần bạn sửa cấu trúc dữ liệu mặc định (thêm hòm,
+ * đổi field...) trong data.js, hãy tăng APP_VERSION lên 1 bên dưới. Lần
+ * kế tiếp người xem mở web (kể cả khi họ vẫn còn dữ liệu cũ trong cùng 1
+ * tab do chưa đóng), web sẽ tự phát hiện version cũ hơn và nạp lại dữ liệu
+ * mặc định mới nhất, không bị kẹt dữ liệu lỗi thời.
+ *
+ * Nơi DUY NHẤT đọc/ghi sessionStorage — muốn chuyển sang lưu server sau
  * này, chỉ cần viết lại các hàm trong file này.
  * -----------------------------------------------------------------------
  */
 
-import { DEFAULT_CATEGORIES, itemImagePath, caseImagePath } from "./data.js";
+import { DEFAULT_CATEGORIES, itemImagePath, caseImagePath } from "./data.js?v=1";
 
-// Tăng version key khi cấu trúc dữ liệu mặc định đổi lớn, để người dùng
-// cũ tự nhận bộ dữ liệu mới thay vì bị kẹt với bản localStorage cũ.
-const STORAGE_KEY = "spin_app_state_v3";
+const STORAGE_KEY = "spin_app_state";
+const VERSION_KEY = "spin_app_version";
+
+// Tăng số này mỗi khi đổi cấu trúc dữ liệu mặc định trong data.js.
+export const APP_VERSION = "1";
 
 function seedState() {
   return {
@@ -42,7 +57,15 @@ const listeners = new Set();
 
 function load() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    // Version cũ hơn (hoặc lần đầu mở) -> bỏ qua dữ liệu cũ, nạp lại mặc định.
+    const storedVersion = sessionStorage.getItem(VERSION_KEY);
+    if (storedVersion !== APP_VERSION) {
+      sessionStorage.setItem(VERSION_KEY, APP_VERSION);
+      sessionStorage.removeItem(STORAGE_KEY);
+      return seedState();
+    }
+
+    const raw = sessionStorage.getItem(STORAGE_KEY);
     if (!raw) return seedState();
     const parsed = JSON.parse(raw);
     if (!parsed.categories || parsed.categories.length === 0) return seedState();
@@ -55,7 +78,8 @@ function load() {
 
 function save() {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    sessionStorage.setItem(VERSION_KEY, APP_VERSION);
   } catch (e) {
     console.warn("Không lưu được dữ liệu.", e);
   }
