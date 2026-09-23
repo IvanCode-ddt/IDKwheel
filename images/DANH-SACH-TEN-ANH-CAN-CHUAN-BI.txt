@@ -1,3 +1,15 @@
+ẢNH BÌA HÒM (hiện ở màn hình chọn hòm):
+----------------------------------------
+images/case-com-suat.jpg   <-  hòm "Cơm Suất"
+images/case-banh-mi-mon-nhanh.jpg   <-  hòm "Bánh Mì & Món Nhanh"
+images/case-mon-nuoc-dong-hop-tien-loi.jpg   <-  hòm "Món Nước Đóng Hộp Tiện Lợi"
+images/case-mi-tron-an-lien.jpg   <-  hòm "Mì Trộn & Ăn Liền"
+images/case-do-an-vat-bua-xe.jpg   <-  hòm "Đồ Ăn Vặt / Bữa Xế"
+images/case-nuoc-trang-mieng.jpg   <-  hòm "Nước & Tráng Miệng"
+images/case-hom-nay-choi-gi.jpg   <-  hòm "Hôm Nay Chơi Gì"
+
+ẢNH MÓN / LỰA CHỌN (hiện khi quay ra):
+----------------------------------------
 ## Cơm Suất
   images/com-tam-suon-bi-cha.jpg   <-  Cơm tấm sườn bì chả
   images/com-binh-dan-tu-chon.jpg   <-  Cơm bình dân tự chọn

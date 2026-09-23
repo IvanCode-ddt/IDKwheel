@@ -1,19 +1,17 @@
 /**
  * state.js
  * -----------------------------------------------------------------------
- * Lưu & đọc danh mục / lựa chọn / lịch sử quay bằng localStorage.
- * Đây là nơi DUY NHẤT đọc/ghi localStorage — nếu sau này bạn muốn chuyển
- * sang lưu server (để đồng bộ nhiều thiết bị), chỉ cần viết lại các hàm
- * trong file này (load/save/CRUD), phần UI ở main.js không cần đổi.
+ * Lưu & đọc danh mục (hòm) / lựa chọn / lịch sử quay bằng localStorage.
+ * Nơi DUY NHẤT đọc/ghi localStorage — muốn chuyển sang lưu server sau
+ * này, chỉ cần viết lại các hàm trong file này.
  * -----------------------------------------------------------------------
  */
 
-import { DEFAULT_CATEGORIES } from "./data.js";
+import { DEFAULT_CATEGORIES, itemImagePath, caseImagePath } from "./data.js";
 
-// Đổi tên key (v1 -> v2) khi cấu trúc dữ liệu mặc định thay đổi lớn (thêm
-// field "image", đổi danh mục món ăn) để người dùng cũ tự động nhận bộ dữ
-// liệu mới thay vì bị kẹt với dữ liệu cũ trong localStorage.
-const STORAGE_KEY = "spin_app_state_v2";
+// Tăng version key khi cấu trúc dữ liệu mặc định đổi lớn, để người dùng
+// cũ tự nhận bộ dữ liệu mới thay vì bị kẹt với bản localStorage cũ.
+const STORAGE_KEY = "spin_app_state_v3";
 
 function seedState() {
   return {
@@ -21,9 +19,15 @@ function seedState() {
       id: c.id,
       name: c.name,
       emoji: c.emoji,
-      items: c.items.map((it) => ({ id: uid(), name: it.name, image: it.image ?? null })),
+      image: c.image ?? null,
+      items: c.items.map((it) => ({
+        id: uid(),
+        name: it.name,
+        image: it.image ?? null,
+        review: it.review ?? null,
+        stats: it.stats ?? [],
+      })),
     })),
-    // lịch sử quay gần đây, theo từng categoryId
     history: {}, // { [categoryId]: [{itemName, ts}] }
     activeCategoryId: DEFAULT_CATEGORIES[0]?.id ?? null,
   };
@@ -69,7 +73,7 @@ export function getState() {
 }
 
 export function getActiveCategory() {
-  return state.categories.find((c) => c.id === state.activeCategoryId) || state.categories[0] || null;
+  return state.categories.find((c) => c.id === state.activeCategoryId) || null;
 }
 
 export function setActiveCategory(categoryId) {
@@ -77,13 +81,18 @@ export function setActiveCategory(categoryId) {
   save();
 }
 
-// ---- Danh mục ---------------------------------------------------------
+// ---- Danh mục (hòm) -----------------------------------------------------
 export function addCategory(name, emoji = "🎲") {
   const trimmed = name.trim();
   if (!trimmed) return null;
-  const category = { id: uid(), name: trimmed, emoji, items: [] };
+  const category = {
+    id: uid(),
+    name: trimmed,
+    emoji,
+    image: caseImagePath(trimmed),
+    items: [],
+  };
   state.categories.push(category);
-  state.activeCategoryId = category.id;
   save();
   return category;
 }
@@ -92,19 +101,28 @@ export function deleteCategory(categoryId) {
   state.categories = state.categories.filter((c) => c.id !== categoryId);
   delete state.history[categoryId];
   if (state.activeCategoryId === categoryId) {
-    state.activeCategoryId = state.categories[0]?.id ?? null;
+    state.activeCategoryId = null;
   }
   save();
 }
 
-// ---- Lựa chọn (items) trong 1 danh mục ---------------------------------
-// image: data URL (string) hoặc null nếu chưa có ảnh.
-export function addItem(categoryId, name, image = null) {
+// ---- Lựa chọn (items) trong 1 hòm ----------------------------------------
+export function addItem(categoryId, name) {
   const trimmed = name.trim();
   if (!trimmed) return null;
   const category = state.categories.find((c) => c.id === categoryId);
   if (!category) return null;
-  const item = { id: uid(), name: trimmed, image };
+  const item = {
+    id: uid(),
+    name: trimmed,
+    image: itemImagePath(trimmed),
+    review: null,
+    stats: [
+      { label: "Độ ngon", value: null },
+      { label: "Mức giá", value: null },
+      { label: "Thời gian chờ", value: null },
+    ],
+  };
   category.items.push(item);
   save();
   return item;
@@ -114,16 +132,6 @@ export function removeItem(categoryId, itemId) {
   const category = state.categories.find((c) => c.id === categoryId);
   if (!category) return;
   category.items = category.items.filter((it) => it.id !== itemId);
-  save();
-}
-
-/** Gắn/đổi ảnh cho 1 item đã có sẵn (vd item mặc định chưa có ảnh). */
-export function updateItemImage(categoryId, itemId, image) {
-  const category = state.categories.find((c) => c.id === categoryId);
-  if (!category) return;
-  const item = category.items.find((it) => it.id === itemId);
-  if (!item) return;
-  item.image = image;
   save();
 }
 

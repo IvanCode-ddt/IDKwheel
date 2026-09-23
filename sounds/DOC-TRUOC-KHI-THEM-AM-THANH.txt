@@ -1,0 +1,20 @@
+THẢ FILE MP3 CỦA BẠN VÀO ĐÚNG THƯ MỤC NÀY (sounds/), ĐÚNG TÊN BÊN DƯỚI.
+Web sẽ tự nhận ra và dùng file thật — không cần sửa code gì thêm.
+Chưa có file nào cũng không sao, web tự phát âm thanh tổng hợp tạm thay thế.
+
+sounds/tick.mp3
+  -> Tiếng "tích" ngắn, phát lặp lại nhiều lần lúc dải đang quay.
+     Nên cắt càng ngắn càng tốt (dưới 0.1 giây), vì sẽ phát rất nhiều lần
+     liên tiếp trong lúc quay.
+
+sounds/mo-hom.mp3
+  -> Tiếng khoá/nắp bật ra, phát đúng lúc nắp hòm mở (trước khi vào đoạn quay).
+     Cắt khoảng 0.3 - 0.6 giây là vừa.
+
+sounds/ket-qua.mp3   (không bắt buộc)
+  -> Tiếng phát lúc kết quả hiện ra. Không có file này thì web tự phát
+     1 tiếng "boong" tổng hợp thay thế, không lỗi gì cả.
+
+Lưu ý bản quyền: đây phải là âm thanh bạn tự cắt/sở hữu hợp pháp,
+không nên dùng nguyên file âm thanh bản quyền của game để đăng công khai
+lên 1 trang web (kể cả web cá nhân) nếu không có quyền sử dụng.

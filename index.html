@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quay Gì Đây? — Vòng quay quyết định</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quay Gì Đây? — Vòng quay quyết định</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
 </head>
-
 <body>
 
   <div class="marquee-bar" aria-hidden="true"></div>
@@ -20,68 +16,108 @@
   <header class="site-header">
     <p class="site-header__eyebrow">Đừng suy nghĩ nữa</p>
     <h1 class="site-header__title">Quay Gì Đây?</h1>
-    <p class="site-header__subtitle">Tự thêm lựa chọn của bạn, bấm Quay, để vòng quay quyết định giúp.</p>
+    <p class="site-header__subtitle">Chọn 1 hòm, bấm mở, để vòng quay quyết định giúp bạn.</p>
   </header>
 
   <main class="layout">
 
-    <!-- Tabs danh mục -->
-    <nav class="category-tabs" id="category-tabs" aria-label="Danh mục"></nav>
+    <!-- ============== MÀN HÌNH 1: CHỌN HÒM ============== -->
+    <section class="screen" id="screen-select">
+      <div class="case-grid" id="case-grid"></div>
 
-    <form class="add-category-form" id="add-category-form">
-      <input type="text" id="new-category-input" placeholder="Thêm danh mục mới, vd: Đi đâu cuối tuần…" maxlength="40"
-        autocomplete="off" />
-      <button type="submit" class="btn btn--outline">+ Danh mục</button>
-    </form>
+      <form class="add-category-form" id="add-category-form">
+        <input
+          type="text"
+          id="new-category-input"
+          placeholder="Thêm hòm mới, vd: Đi đâu cuối tuần…"
+          maxlength="40"
+          autocomplete="off"
+        />
+        <button type="submit" class="btn btn--outline">+ Thêm Hòm</button>
+      </form>
+    </section>
 
-    <div class="board">
-      <!-- Cột trái: quản lý lựa chọn -->
-      <section class="panel panel--manage">
-        <div class="panel__head">
-          <h2 id="category-title">—</h2>
-          <button id="delete-category-btn" class="btn btn--text-danger" hidden>Xoá danh mục</button>
+    <!-- ============== MÀN HÌNH 2: MỞ HÒM ============== -->
+    <section class="screen" id="screen-open" hidden>
+      <button class="back-btn" id="back-btn">← Danh sách hòm</button>
+
+      <div class="open-head">
+        <h2 id="open-case-name">—</h2>
+        <button class="btn btn--outline btn--tiny" id="manage-toggle-btn">Xem / Sửa danh sách bên trong</button>
+      </div>
+
+      <div class="case-stage" id="case-stage">
+        <!-- Trạng thái chờ: hòm vàng mặc định -->
+        <div class="case-visual" id="case-visual"></div>
+
+        <!-- Trạng thái quay: dải item cuộn ngang -->
+        <div class="roulette-viewport" id="roulette-viewport" hidden>
+          <div class="pointer" aria-hidden="true"></div>
+          <div class="roulette-track" id="roulette-track"></div>
         </div>
 
+        <!-- Trạng thái kết quả: chi tiết món vừa quay ra -->
+        <div class="result-detail" id="result-detail" hidden>
+          <div class="result-detail__thumb" id="result-thumb"></div>
+          <h3 class="result-detail__name" id="result-name">—</h3>
+          <div id="result-stats-slot"></div>
+          <div id="result-review-slot"></div>
+          <div class="result-actions">
+            <button class="btn btn--spin" id="spin-again-btn">Mở Hòm Khác</button>
+            <button class="btn btn--outline" id="back-to-list-btn">Về Danh Sách Hòm</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn--spin" id="spin-btn">Mở Hòm</button>
+
+      <!-- Bảng quản lý lựa chọn bên trong hòm, ẩn mặc định -->
+      <div class="manage-panel" id="manage-panel" hidden>
         <ul class="manage-list" id="item-list"></ul>
-        <p class="empty-state" id="empty-state" hidden>Danh mục này chưa có lựa chọn nào. Thêm vài cái bên dưới nhé.</p>
+        <p class="empty-state" id="empty-state" hidden>Hòm này chưa có lựa chọn nào. Thêm vài cái bên dưới nhé.</p>
 
         <form class="add-item-form" id="add-item-form">
-          <input type="text" id="new-item-input" placeholder="Thêm lựa chọn, vd: Bún đậu mắm tôm…" maxlength="60"
-            autocomplete="off" />
+          <input
+            type="text"
+            id="new-item-input"
+            placeholder="Thêm lựa chọn, vd: Bún đậu mắm tôm…"
+            maxlength="60"
+            autocomplete="off"
+          />
           <button type="submit" class="btn btn--ghost">Thêm</button>
         </form>
 
+        <button class="btn btn--text-danger" id="delete-category-btn">Xoá cả hòm này</button>
+
         <h3 class="history-title">Đã quay gần đây</h3>
         <ul class="history-list" id="history-list"></ul>
-      </section>
+      </div>
+    </section>
 
-      <!-- Cột phải: khu vực quay -->
-      <section class="panel panel--spin">
-        <div class="spin-stage">
-          <div class="pointer" aria-hidden="true"></div>
-          <div class="roulette-viewport" id="roulette-viewport" hidden>
-            <div class="roulette-track" id="roulette-track"></div>
-          </div>
-
-          <div class="idle-illustration" id="idle-illustration">
-            <span class="idle-illustration__dice">🎯</span>
-            <p>Bấm <strong>Quay Ngay</strong> để bắt đầu</p>
-          </div>
-
-          <div class="result-panel" id="result-panel" hidden>
-            <p class="result-panel__label">Kết quả</p>
-            <div class="result-panel__thumb" id="result-thumb"></div>
-            <p class="result-panel__name" id="result-name">—</p>
-            <button class="btn btn--primary" id="spin-again-btn">Quay Lại</button>
-          </div>
-        </div>
-
-        <button class="btn btn--spin" id="spin-btn">Quay Ngay</button>
-      </section>
-    </div>
   </main>
+
+  <!-- Nút Góp Ý nổi, hiện ở mọi màn hình -->
+  <button class="feedback-btn" id="feedback-btn">💬 Góp Ý</button>
+
+  <div class="feedback-modal" id="feedback-modal" hidden>
+    <div class="feedback-modal__backdrop" id="feedback-backdrop"></div>
+    <div class="feedback-modal__box">
+      <button class="feedback-modal__close" id="feedback-close" aria-label="Đóng">✕</button>
+      <h3 class="feedback-modal__title">Góp ý cho web</h3>
+      <iframe
+        id="feedback-iframe"
+        class="feedback-modal__iframe"
+        title="Form góp ý"
+        loading="lazy"
+        hidden
+      ></iframe>
+      <p class="feedback-modal__fallback" id="feedback-fallback" hidden>
+        Chưa cấu hình form góp ý. Chủ trang cần dán link Google Form vào
+        <code>FEEDBACK_FORM_URL</code> trong file <code>js/data.js</code>.
+      </p>
+    </div>
+  </div>
 
   <script type="module" src="js/main.js"></script>
 </body>
-
 </html>
